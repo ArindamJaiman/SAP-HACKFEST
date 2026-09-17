@@ -1,5 +1,5 @@
 /**
- * SAP Resilient: Incident Mode Banner (Section 28)
+ * SAP Resilient: Incident Advisory Banner
  */
 
 import { store } from '../app/store.js';
@@ -23,15 +23,15 @@ export class IncidentBanner {
 
     this.container.innerHTML = `
       <div class="incident-banner">
-        <div class="incident-pulse-badge">INCIDENT ACTIVE</div>
-        <div style="display:flex; flex-direction:column;">
-          <span class="incident-text-primary">${activeIncidentTitle || 'PORT OF SINGAPORE DISRUPTION'}</span>
+        <div class="incident-pulse-badge">CRITICAL ADVISORY</div>
+        <div style="display:flex; align-items:baseline; gap:8px;">
+          <span class="incident-text-primary">${activeIncidentTitle || 'Port of Singapore Force Majeure'}</span>
           <span class="incident-text-sub">
-            SEVERITY: <strong>CRITICAL</strong> · 47 SHIPMENTS AT RISK · SERVICE IMPACT: -8.4% · ESTIMATED EXPOSURE: $142M
+            47 Vessels Delayed · Projected Service Drop: -6.4% · Exposure: $142M
           </span>
         </div>
-        <button class="btn-tactical cyan" id="btn-focus-incident" style="padding:4px 10px; font-size:10px;">
-          FOCUS EPICENTER
+        <button class="btn-tactical danger" id="btn-focus-incident" style="padding:3px 10px; font-size:10px; margin-left:6px;">
+          Focus Epicenter
         </button>
       </div>
     `;

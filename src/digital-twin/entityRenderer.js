@@ -24,13 +24,13 @@ export class EntityRenderer {
 
     // Cache procedural icons as Data URLs
     this.iconCache = {
-      port: this.createSvgIcon('#00f0ff', 'circle', 20),
-      factory: this.createSvgIcon('#ffaa00', 'rect', 18),
-      supplier: this.createSvgIcon('#e6a100', 'diamond', 14),
-      warehouse: this.createSvgIcon('#2d7dff', 'square', 16),
-      demand: this.createSvgIcon('#b34eff', 'ring', 16),
-      vessel: this.createSvgIcon('#ffffff', 'triangle', 12),
-      disruption: this.createSvgIcon('#ff2a4b', 'cross', 26)
+      port: this.createSvgIcon('#38bdf8', 'circle', 16),
+      factory: this.createSvgIcon('#f97316', 'rect', 15),
+      supplier: this.createSvgIcon('#f59e0b', 'diamond', 12),
+      warehouse: this.createSvgIcon('#3b82f6', 'square', 14),
+      demand: this.createSvgIcon('#8b5cf6', 'ring', 14),
+      vessel: this.createSvgIcon('#f8fafc', 'triangle', 10),
+      disruption: this.createSvgIcon('#ef4444', 'cross', 22)
     };
   }
 
@@ -41,11 +41,11 @@ export class EntityRenderer {
     const ctx = canvas.getContext('2d');
     const center = size;
 
-    ctx.shadowColor = color;
-    ctx.shadowBlur = 8;
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
+    ctx.shadowBlur = 3;
     ctx.fillStyle = color;
     ctx.strokeStyle = '#ffffff';
-    ctx.lineWidth = 1.5;
+    ctx.lineWidth = 1.2;
 
     if (shape === 'circle') {
       ctx.beginPath();

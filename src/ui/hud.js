@@ -1,6 +1,6 @@
 /**
- * SAP Resilient: Executive KPI HUD (Section 19 & Section 20)
- * Real-time composite health breakdown and strategic operational metrics
+ * SAP Resilient: Executive KPI Bar
+ * Real-time composite network health and strategic enterprise metrics
  */
 
 import { store } from '../app/store.js';
@@ -22,48 +22,48 @@ export class ExecutiveHud {
           </svg>
           SAP RESILIENT
         </div>
-        <div class="brand-status-chip live">CONTROL TOWER LIVE</div>
+        <div class="brand-status-chip live">Control Tower</div>
       </div>
 
       <div class="kpi-cluster">
-        <!-- Health Score Composite Card -->
-        <div class="health-score-card" id="btn-health-drilldown" title="Click to view health score breakdown">
+        <!-- Composite Health Tile -->
+        <div class="health-score-card" id="btn-health-drilldown" title="Composite Network Health Breakdown">
           <div style="display:flex; flex-direction:column;">
-            <span class="kpi-label">NETWORK HEALTH</span>
+            <span class="kpi-label">Health Score</span>
             <span class="health-score-val" id="hud-health-score">82</span>
           </div>
-          <div style="font-size:10px; color:var(--color-cyan); font-family:var(--font-mono); line-height:1.2;">
-            RESIL: <span id="val-resil">78</span><br>
-            INVENT: <span id="val-invent">84</span>
+          <div style="font-size:10px; color:var(--color-primary-light); font-family:var(--font-mono); line-height:1.2;">
+            RSL: <span id="val-resil">78</span><br>
+            INV: <span id="val-invent">84</span>
           </div>
         </div>
 
         <div class="kpi-item" id="kpi-disruptions">
-          <span class="kpi-label">ACTIVE DISRUPTIONS</span>
+          <span class="kpi-label">Active Disruptions</span>
           <div class="kpi-value-row">
-            <span class="kpi-value" style="color:var(--color-red);" id="hud-disruptions">3</span>
+            <span class="kpi-value" style="color:var(--color-danger);" id="hud-disruptions">3</span>
             <span class="kpi-delta bad">CRITICAL</span>
           </div>
         </div>
 
         <div class="kpi-item" id="kpi-service-level">
-          <span class="kpi-label">SERVICE LEVEL</span>
+          <span class="kpi-label">Service Level</span>
           <div class="kpi-value-row">
             <span class="kpi-value" id="hud-service-level">91.2%</span>
-            <span class="kpi-delta bad" id="hud-service-delta">▼ 6.4%</span>
+            <span class="kpi-delta bad" id="hud-service-delta">-6.4%</span>
           </div>
         </div>
 
         <div class="kpi-item" id="kpi-at-risk-shipments">
-          <span class="kpi-label">AT-RISK SHIPMENTS</span>
+          <span class="kpi-label">At-Risk Shipments</span>
           <div class="kpi-value-row">
-            <span class="kpi-value" style="color:var(--color-orange);" id="hud-at-risk-shipments">47</span>
-            <span class="kpi-delta warn">DELAY > 24H</span>
+            <span class="kpi-value" style="color:var(--color-warning);" id="hud-at-risk-shipments">47</span>
+            <span class="kpi-delta warn">> 24h</span>
           </div>
         </div>
 
         <div class="kpi-item" id="kpi-revenue-exposure">
-          <span class="kpi-label">REVENUE AT RISK</span>
+          <span class="kpi-label">Revenue Exposure</span>
           <div class="kpi-value-row">
             <span class="kpi-value" id="hud-revenue-risk">$142M</span>
             <span class="kpi-delta bad">EXPOSURE</span>
@@ -71,29 +71,29 @@ export class ExecutiveHud {
         </div>
 
         <div class="kpi-item" id="kpi-otd">
-          <span class="kpi-label">ON-TIME DELIVERY</span>
+          <span class="kpi-label">On-Time Delivery</span>
           <div class="kpi-value-row">
             <span class="kpi-value" id="hud-otd">88.5%</span>
-            <span class="kpi-delta warn">TARGET 98%</span>
+            <span class="kpi-delta warn">TGT 98%</span>
           </div>
         </div>
       </div>
 
       <div class="header-actions">
-        <!-- 3D / 2D / GRAPH Mode Switcher -->
+        <!-- 3D / 2D / GRAPH View Switcher -->
         <div class="segmented-control">
-          <button class="segmented-btn active" id="btn-mode-3d">3D GLOBE</button>
-          <button class="segmented-btn" id="btn-mode-2d">2D MAP</button>
-          <button class="segmented-btn" id="btn-mode-graph">GRAPH</button>
+          <button class="segmented-btn active" id="btn-mode-3d">3D Globe</button>
+          <button class="segmented-btn" id="btn-mode-2d">2D Map</button>
+          <button class="segmented-btn" id="btn-mode-graph">Network Graph</button>
         </div>
 
-        <button class="btn-tactical cyan" id="btn-open-command-bar" title="Press '/' to trigger command bar">
+        <button class="btn-tactical primary" id="btn-open-command-bar" title="Search or execute directives (Shortcut: /)">
           <svg style="width:12px; height:12px; fill:currentColor;" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-          COMMAND [ / ]
+          Command [/]
         </button>
 
-        <button class="btn-tactical green" id="btn-demo-mode">
-          DEMO MODE
+        <button class="btn-tactical success" id="btn-demo-mode">
+          Demo Presentation
         </button>
       </div>
     `;
@@ -141,10 +141,10 @@ export class ExecutiveHud {
 
     const sDelta = document.getElementById('hud-service-delta');
     if (d.serviceLevel >= 97) {
-      sDelta.textContent = '▲ RECOVERED';
+      sDelta.textContent = '+6.9% Restabilized';
       sDelta.className = 'kpi-delta good';
     } else {
-      sDelta.textContent = '▼ 6.4%';
+      sDelta.textContent = '-6.4% Exposure';
       sDelta.className = 'kpi-delta bad';
     }
   }

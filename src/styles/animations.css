@@ -1,69 +1,24 @@
-/* SAP Resilient: Keyframe Animations */
+/* SAP Resilient: Clean Enterprise Micro-Animations */
 
-@keyframes pulse-ring {
-  0% {
-    transform: scale(0.9);
-    opacity: 0.9;
-  }
-  50% {
-    transform: scale(1.4);
-    opacity: 0.4;
-  }
-  100% {
-    transform: scale(0.9);
-    opacity: 0.9;
-  }
-}
-
-@keyframes strobe-alert {
+@keyframes pulse-subtle {
   0%, 100% {
-    box-shadow: 0 4px 24px rgba(255, 42, 75, 0.3);
-    border-color: rgba(255, 42, 75, 0.7);
+    opacity: 1;
   }
   50% {
-    box-shadow: 0 4px 36px rgba(255, 42, 75, 0.65);
-    border-color: rgba(255, 42, 75, 1);
-  }
-}
-
-@keyframes slide-in-top {
-  0% {
-    opacity: 0;
-    transform: translateY(-16px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
+    opacity: 0.6;
   }
 }
 
 @keyframes fade-in {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes dash-flow {
-  to {
-    stroke-dashoffset: -20;
-  }
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(12px); }
+  to { opacity: 1; transform: translateX(0); }
 }
 
-.radar-sweep {
-  position: relative;
-  overflow: hidden;
-}
-.radar-sweep::after {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: conic-gradient(from 0deg at 50% 50%, rgba(0, 240, 255, 0.15) 0deg, transparent 60deg, transparent 360deg);
-  animation: sweep 4s linear infinite;
-  pointer-events: none;
-}
-@keyframes sweep {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.fade-in {
+  animation: fade-in 0.2s ease-out;
 }

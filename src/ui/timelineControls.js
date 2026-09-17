@@ -1,5 +1,5 @@
 /**
- * SAP Resilient: Bottom Dock & Simulation Timeline Controls (Section 17 & Section 41)
+ * SAP Resilient: Bottom Dock & Simulation Timeline Controls
  */
 
 import { store } from '../app/store.js';
@@ -17,44 +17,45 @@ export class TimelineControls {
       <!-- Playback Controls -->
       <div style="display:flex; align-items:center; gap:12px;">
         <div style="display:flex; align-items:center; gap:4px;">
-          <button class="btn-tactical cyan" id="btn-play-pause" style="padding:4px 10px;">
-            <span id="icon-play-pause">❚❚ PAUSE</span>
+          <button class="btn-tactical primary" id="btn-play-pause" style="padding:4px 12px;">
+            <span id="icon-play-pause">❚❚ Pause</span>
           </button>
-          <button class="btn-tactical" id="btn-step-forward" style="padding:4px 8px; border:1px solid var(--border-subtle);">
-            ▶| STEP
+          <button class="btn-tactical" id="btn-step-forward" style="padding:4px 8px; border:1px solid var(--border-medium); color:var(--color-neutral);">
+            ▶| Step
           </button>
         </div>
 
         <div class="segmented-control">
-          <button class="segmented-btn active" data-speed="1">1X</button>
-          <button class="segmented-btn" data-speed="5">5X</button>
-          <button class="segmented-btn" data-speed="20">20X</button>
-          <button class="segmented-btn" data-speed="100">100X</button>
+          <button class="segmented-btn active" data-speed="1">1x</button>
+          <button class="segmented-btn" data-speed="5">5x</button>
+          <button class="segmented-btn" data-speed="20">20x</button>
+          <button class="segmented-btn" data-speed="100">100x</button>
         </div>
 
-        <div style="display:flex; flex-direction:column; font-family:var(--font-mono); font-size:10px; line-height:1.2;">
-          <span style="color:var(--color-text-muted);">SIM CLOCK: <strong style="color:var(--color-cyan);" id="sim-clock-display">2026-09-17 08:42:15 UTC</strong></span>
-          <span style="color:var(--color-text-dim);">REAL TIME: <span id="real-clock-display">LIVE SYNC</span></span>
+        <div style="display:flex; align-items:center; gap:8px; font-family:var(--font-mono); font-size:11px; margin-left:6px;">
+          <span style="color:var(--color-neutral);">Sim Time: <strong style="color:var(--color-primary-light);" id="sim-clock-display">2026-09-17 08:42 UTC</strong></span>
+          <span style="color:var(--color-text-dim);">|</span>
+          <span style="color:var(--color-text-dim);">UTC: <span id="real-clock-display">LIVE</span></span>
         </div>
       </div>
 
-      <!-- Recovery Progress Meter (Section 41) -->
-      <div style="display:flex; align-items:center; gap:14px; min-width:440px;" id="recovery-meter-cluster">
+      <!-- Recovery Progress Meter -->
+      <div style="display:flex; align-items:center; gap:12px; min-width:400px;" id="recovery-meter-cluster">
         <div style="display:flex; flex-direction:column; width:100%;">
-          <div style="display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:10px; margin-bottom:3px;">
-            <span style="color:var(--color-cyan); font-weight:700;">NETWORK RECOVERY VELOCITY</span>
-            <span id="recovery-percent-val" style="color:var(--color-white); font-weight:700;">0%</span>
+          <div style="display:flex; justify-content:space-between; font-size:10px; margin-bottom:3px;">
+            <span style="color:var(--color-neutral); font-weight:500;">Contingency Execution Velocity</span>
+            <span id="recovery-percent-val" style="color:var(--color-text-main); font-family:var(--font-mono); font-weight:600;">0%</span>
           </div>
-          <div style="width:100%; height:8px; background:rgba(6,12,20,0.8); border:1px solid var(--border-subtle); border-radius:4px; overflow:hidden;">
-            <div id="recovery-progress-bar" style="width:0%; height:100%; background:linear-gradient(90deg, #00f0ff 0%, #00e676 100%); transition:width 0.4s ease;"></div>
+          <div style="width:100%; height:6px; background:rgba(30,41,59,0.6); border:1px solid var(--border-subtle); border-radius:3px; overflow:hidden;">
+            <div id="recovery-progress-bar" style="width:0%; height:100%; background:#10b981; transition:width 0.4s ease;"></div>
           </div>
         </div>
       </div>
 
       <!-- Quick Reset & Framing -->
       <div style="display:flex; align-items:center; gap:8px;">
-        <button class="btn-tactical cyan" id="btn-reset-globe">
-          RESET GLOBE [0]
+        <button class="btn-tactical" id="btn-reset-globe" style="border:1px solid var(--border-medium); color:var(--color-neutral);">
+          Reset View [0]
         </button>
       </div>
     `;
@@ -68,7 +69,7 @@ export class TimelineControls {
     playBtn.addEventListener('click', () => {
       const isPlaying = store.getState().simulation.isPlaying;
       store.setState(s => { s.simulation.isPlaying = !isPlaying; });
-      playIcon.textContent = !isPlaying ? '❚❚ PAUSE' : '▶ PLAY';
+      playIcon.textContent = !isPlaying ? '❚❚ Pause' : '▶ Play';
     });
 
     this.container.querySelectorAll('[data-speed]').forEach(btn => {
@@ -89,7 +90,7 @@ export class TimelineControls {
     setInterval(() => {
       const d = new Date();
       const realEl = document.getElementById('real-clock-display');
-      if (realEl) realEl.textContent = d.toISOString().substr(11, 8) + ' UTC';
+      if (realEl) realEl.textContent = d.toISOString().substr(11, 8);
     }, 1000);
   }
 

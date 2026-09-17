@@ -1,5 +1,5 @@
 /**
- * SAP Resilient: Real-time Specialist Agent Activity Feed (Section 13)
+ * SAP Resilient: Real-time Autonomous Operations Feed
  */
 
 import { store } from '../app/store.js';
@@ -16,8 +16,8 @@ export class AgentFeedBox {
     this.container.innerHTML = `
       <div class="agent-feed-box">
         <div class="agent-feed-header">
-          <span>AI SPECIALIST ORCHESTRATION</span>
-          <span style="font-size:9px; color:var(--color-text-dim);">LIVE TELEMETRY BUS</span>
+          <span>Autonomous Operations Feed</span>
+          <span style="font-size:9px; color:var(--color-text-dim); font-family:var(--font-mono);">LIVE STREAM</span>
         </div>
         <div class="agent-feed-list" id="agent-feed-items">
           <!-- Messages will be injected here -->
@@ -33,7 +33,7 @@ export class AgentFeedBox {
 
     const messages = store.getState().agentStream;
     if (messages.length === 0) {
-      list.innerHTML = `<div style="font-size:10px; color:var(--color-text-dim); text-align:center; padding:10px;">Agents standing by...</div>`;
+      list.innerHTML = `<div style="font-size:11px; color:var(--color-text-dim); text-align:center; padding:12px;">Operations feed standing by...</div>`;
       return;
     }
 
@@ -41,7 +41,7 @@ export class AgentFeedBox {
       <div class="agent-msg-row">
         <span class="agent-timestamp">${msg.timestamp}</span>
         <span class="agent-tag ${msg.tag}">${msg.source}</span>
-        <span style="color:var(--color-white);">${msg.text}</span>
+        <span style="color:var(--color-text-main);">${msg.text}</span>
       </div>
     `).join('');
   }
