@@ -1,5 +1,8 @@
 /**
  * SAP Resilient: Main Application Lifecycle Orchestrator
+ * Fully wires Application Shell, Sidebar Navigation, 3D Digital Twin,
+ * Hero Overview KPIs, Dedicated Operational Page Views, What-If Simulator,
+ * and Multi-Agent Orchestration.
  */
 
 import * as Cesium from 'cesium';
@@ -13,7 +16,9 @@ import { PropagationOverlay } from '../digital-twin/propagationOverlay.js';
 import { NetworkGraphView } from '../digital-twin/networkGraphView.js';
 
 import { ExecutiveHud } from '../ui/hud.js';
-import { LayersPanel } from '../ui/layersPanel.js';
+import { SidebarNav } from '../ui/sidebarNav.js';
+import { HeroOverview } from '../ui/heroOverview.js';
+import { PageViewsManager } from '../ui/pageViews.js';
 import { EntityDrawer } from '../ui/entityDrawer.js';
 import { ApprovalCardsManager } from '../ui/approvalCards.js';
 import { AgentFeedBox } from '../ui/agentFeed.js';
@@ -24,7 +29,7 @@ import { demoDirector } from '../ui/demoDirector.js';
 import { orchestrator } from '../agents/orchestrator.js';
 
 export async function bootstrapApplication() {
-  console.info('[SAP Resilient] Bootstrapping Control Tower...');
+  console.info('[SAP Resilient] Bootstrapping Control Tower Engine...');
 
   // 1. Initialize Cesium Digital Twin Viewer
   const viewer = createDigitalTwinViewer('cesiumContainer');
@@ -34,7 +39,7 @@ export async function bootstrapApplication() {
   const propagationOverlay = new PropagationOverlay(viewer);
   const networkGraphView = new NetworkGraphView('network-graph-container');
 
-  // 2. Render Seed Entities onto Globe
+  // 2. Render Seed Entities & Multimodal Logistics onto Globe
   const state = store.getState();
   entityRenderer.renderAllEntities(state.entities);
   routeRenderer.renderRoutes(state.entities.routes);
@@ -42,11 +47,15 @@ export async function bootstrapApplication() {
   // 3. Render initial causal propagation arcs from Singapore
   const sinPort = state.entities.ports.find(p => p.id === 'PORT-SIN');
   const atRiskWarehouses = state.entities.warehouses.filter(w => w.id === 'WH-17' || w.id === 'WH-24');
-  propagationOverlay.renderCausalArcs(sinPort, atRiskWarehouses);
+  if (sinPort && atRiskWarehouses.length > 0) {
+    propagationOverlay.renderCausalArcs(sinPort, atRiskWarehouses);
+  }
 
-  // 4. Initialize UI Framework
+  // 4. Initialize Modular UI Architecture
   const hud = new ExecutiveHud('top-hud');
-  const layersPanel = new LayersPanel('left-panel');
+  const sidebarNav = new SidebarNav('left-panel');
+  const heroOverview = new HeroOverview('center-viewport');
+  const pageViews = new PageViewsManager('operational-views-container');
   const entityDrawer = new EntityDrawer('right-drawer');
   const approvalCards = new ApprovalCardsManager('approval-cards-container');
   const agentFeed = new AgentFeedBox('agent-feed-container');
@@ -54,7 +63,7 @@ export async function bootstrapApplication() {
   const commandBar = new CommandBar('command-bar-modal');
   const incidentBanner = new IncidentBanner('incident-banner-container');
 
-  // 5. Connect Cesium Click Handler to Context Inspector
+  // 5. Connect Cesium Click Handler to Context Inspector (Section 20)
   const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
   handler.setInputAction((movement) => {
     const pickedObject = viewer.scene.pick(movement.position);
@@ -64,7 +73,7 @@ export async function bootstrapApplication() {
     }
   }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
-  // 6. Synchronize Store Changes to Visual Layers
+  // 6. Synchronize Store Changes to Visual 3D Layers
   store.subscribe((currState) => {
     // Layer toggles
     Object.keys(currState.layers).forEach(k => {
@@ -101,16 +110,8 @@ export async function bootstrapApplication() {
   window.__appStore = store;
   window.__appEventBus = eventBus;
 
-  // Demo button wiring
-  const demoBtn = document.getElementById('btn-demo-mode');
-  if (demoBtn) {
-    demoBtn.addEventListener('click', () => {
-      demoDirector.runGlobalLogisticsShockDemo();
-    });
-  }
-
   // 8. Launch Multi-Agent Sensing Loop
   orchestrator.startSensingLoop();
 
-  console.info('[SAP Resilient] Control Tower fully active and listening for disruptions.');
+  console.info('[SAP Resilient] Control Tower fully operational.');
 }

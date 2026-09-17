@@ -47,6 +47,21 @@ console.assert(costScored[0].title === 'Maritime Reroute', 'Cost optimizer must 
 optimizer.setWeights('MINIMIZE_DELAY');
 const speedScored = optimizer.optimizeScenarios(mockCandidates, 'TEST-CORR-2');
 console.assert(speedScored[0].title === 'Air Charter', 'Delay optimizer must prioritize Air Charter');
-console.log('✓ TEST 4 PASSED: Multi-objective optimizer dynamically shifts recommendations based on policy weights.');
+// Test 5: Scenario Presets & Tradeoff Metrics
+import { PRELOADED_SCENARIOS } from '../src/data/scenariosData.js';
+console.assert(PRELOADED_SCENARIOS.length >= 5, 'Must have at least 5 enterprise scenario presets');
+const sinScenario = PRELOADED_SCENARIOS.find(s => s.id === 'SCENARIO-01');
+console.assert(sinScenario.affectedNetwork.ports.includes('PORT-SIN'), 'Flagship scenario must target PORT-SIN');
+console.assert(sinScenario.candidateOptions.length >= 3, 'Flagship scenario must provide at least 3 candidate options');
+console.log('✓ TEST 5 PASSED: Scenario presets and multi-strategy trade-off models verified.');
 
-console.log('--- ALL 4 UNIT TESTS PASSED SUCCESSFULLY ---');
+// Test 6: Relational Supply Chain Graph Integrity
+let connectedCount = 0;
+data1.warehouses.forEach(w => {
+  const neighbors = graph.getNeighbors(w.id);
+  if (neighbors.length > 0) connectedCount++;
+});
+console.assert(connectedCount > 0, 'Warehouses must be connected into graph topology');
+console.log(`✓ TEST 6 PASSED: Relational graph integrity verified (${connectedCount} warehouses interconnected).`);
+
+console.log('--- ALL 6 UNIT TESTS PASSED SUCCESSFULLY ---');

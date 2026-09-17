@@ -51,6 +51,12 @@ export class SupplyChainGraph {
     return Array.from(this.adjIn.get(nodeId) || []);
   }
 
+  getNeighbors(nodeId) {
+    const outEdges = this.getOutboundEdges(nodeId).map(e => e.to);
+    const inEdges = this.getInboundEdges(nodeId).map(e => e.from);
+    return Array.from(new Set([...outEdges, ...inEdges]));
+  }
+
   /**
    * Breadth-First Search to calculate multi-hop causal downstream propagation
    * @param {string} startNodeId - Epicenter of disruption

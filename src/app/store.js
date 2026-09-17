@@ -58,8 +58,9 @@ class CentralStore {
         aiRoutes: true
       },
 
-      // UI View & Navigation
+      // UI View, Pages & Tactical Controls
       ui: {
+        activePage: 'OVERVIEW', // OVERVIEW | DIGITAL_TWIN | LIVE_OPS | AGENTS | DISRUPTIONS | RISK | FORECAST | SCENARIOS | WHAT_IF | INVENTORY | SUPPLIERS | LOGISTICS | APPROVALS | AUDIT | COMPLIANCE | SUSTAINABILITY | DATA_SOURCES | HEALTH | SETTINGS
         viewMode: '3D', // '3D' | '2D' | 'GRAPH'
         selectedEntity: null,
         incidentMode: true,
@@ -67,14 +68,94 @@ class CentralStore {
         searchQuery: '',
         activeFilter: 'ALL',
         leftPanelCollapsed: false,
-        rightDrawerCollapsed: false
+        rightDrawerCollapsed: false,
+        presentationMode: false,
+        twinInspectMode: false,
+        weatherLayer: false,
+        trafficParticles: true,
+        labelsVisible: true,
+        activeRiskDimensions: {
+          supplier: true,
+          transport: true,
+          inventory: true,
+          geopolitical: false,
+          climate: true
+        }
       },
+
+      // Notifications Center
+      notifications: [
+        {
+          id: 'NOTIF-01',
+          severity: 'CRITICAL',
+          title: 'Port Singapore-02 Congestion Lockdown',
+          message: 'Berth waiting time reached 4.8 days; 47 inbound shipments delayed.',
+          time: '14:32',
+          entityType: 'port',
+          entityId: 'PORT-SIN',
+          read: false
+        },
+        {
+          id: 'NOTIF-02',
+          severity: 'WARNING',
+          title: 'Hsinchu Semiconductor Outage Detected',
+          message: 'Lithography cleanroom power trip; automotive IC backlog accumulating.',
+          time: '14:15',
+          entityType: 'supplier',
+          entityId: 'SUP-012',
+          read: false
+        },
+        {
+          id: 'NOTIF-03',
+          severity: 'INFO',
+          title: 'Autonomous Logistics Agent Reroute Prepared',
+          message: 'Port Klang alternative contingency evaluated with 94.8% SLA confidence.',
+          time: '14:35',
+          entityType: 'shipment',
+          entityId: 'SHP-0047',
+          read: true
+        }
+      ],
 
       // Human-in-the-Loop Governance
       governance: {
         pendingApproval: null, // Active recommendation awaiting human click
         approvalHistory: [],
-        auditLog: []
+        auditLog: [
+          {
+            timestamp: '14:30:12',
+            actor: 'SENTINEL AGENT',
+            agent: 'SENTINEL AGENT',
+            action: 'DISRUPTION DETECTED',
+            entity: 'PORT-SIN (Singapore Terminal 2)',
+            reason: 'Berth queue exceeded 40 vessels; AIS dwell time anomaly flagged',
+            beforeState: 'Status: OPERATIONAL · Health: 94',
+            afterState: 'Status: DISRUPTED · Health: 42',
+            result: 'CONFIRMED'
+          },
+          {
+            timestamp: '14:31:05',
+            actor: 'IMPACT ANALYST AGENT',
+            agent: 'IMPACT ANALYST AGENT',
+            action: 'MULTI-HOP CASCADE TRACED',
+            entity: '28 Downstream Entities',
+            reason: 'Identified 47 shipments, WH-17, WH-24, and 3 Gigafactories in risk perimeter',
+            beforeState: 'Exposure: $0M',
+            afterState: 'Exposure: $142M · 47 Shipments at Risk',
+            result: 'ALERT_ISSUED'
+          },
+          {
+            timestamp: '14:33:40',
+            actor: 'SCENARIO ENGINEER',
+            agent: 'SCENARIO ENGINEER',
+            action: 'SIMULATED 3 RECOVERY POLICIES',
+            entity: 'Singapore-Klang Corridor',
+            reason: 'Generated Baseline, Maritime Reroute, and Air Expedite options',
+            beforeState: 'Strategies: 0',
+            afterState: 'Strategies: 3 Evaluated',
+            result: 'READY'
+          }
+        ]
       },
 
       // Realtime Agent Stream Log
@@ -194,6 +275,34 @@ class CentralStore {
       s.ui.viewMode = mode;
     });
     eventBus.emit('VIEW_MODE_CHANGED', { mode }, { source: 'USER' });
+  }
+
+  setActivePage(page) {
+    this.setState(s => {
+      s.ui.activePage = page;
+    });
+    eventBus.emit('PAGE_CHANGED', { page }, { source: 'USER' });
+  }
+
+  togglePresentationMode() {
+    this.setState(s => {
+      s.ui.presentationMode = !s.ui.presentationMode;
+    });
+    eventBus.emit('PRESENTATION_MODE_TOGGLED', { active: this.state.ui.presentationMode });
+  }
+
+  toggleTwinInspect() {
+    this.setState(s => {
+      s.ui.twinInspectMode = !s.ui.twinInspectMode;
+    });
+    eventBus.emit('TWIN_INSPECT_TOGGLED', { active: this.state.ui.twinInspectMode });
+  }
+
+  markNotificationRead(id) {
+    this.setState(s => {
+      const notif = s.notifications.find(n => n.id === id);
+      if (notif) notif.read = true;
+    });
   }
 
   addAgentMessage(source, text, tag = 'sentinel') {
