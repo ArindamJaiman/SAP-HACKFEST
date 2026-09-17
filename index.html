@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SAP Resilient · Agentic Supply-Chain Control Tower</title>
+  <meta name="description" content="Agentic Self-Adapting Supply-Chain Control Tower inspired by the spatial-computing model of God's Eye View" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300f0ff'><path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>" />
+</head>
+<body>
+  <!-- Fullscreen 3D Cesium Digital Twin -->
+  <div id="cesiumContainer"></div>
+
+  <!-- Synchronized 2D Topological Network Graph Mode -->
+  <div id="network-graph-container"></div>
+
+  <!-- Primary Tactical Command Center Layout -->
+  <div id="app-container">
+    <header id="top-hud"></header>
+    <aside id="left-panel"></aside>
+    <main id="center-viewport"></main>
+    <aside id="right-drawer"></aside>
+    <footer id="bottom-dock"></footer>
+  </div>
+
+  <!-- Floating Tactical Widgets -->
+  <div id="incident-banner-container"></div>
+  <div id="agent-feed-container"></div>
+  <div id="approval-cards-container"></div>
+  <div id="command-bar-modal"></div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

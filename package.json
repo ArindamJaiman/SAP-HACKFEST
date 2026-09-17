@@ -1,0 +1,20 @@
+{
+  "name": "sap-resilient-control-tower",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Agentic Self-Adapting Supply-Chain Control Tower inspired by God's Eye View",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "node test/simulation.test.mjs"
+  },
+  "dependencies": {
+    "cesium": "^1.124.0"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0",
+    "vite-plugin-cesium": "^1.2.23"
+  }
+}
