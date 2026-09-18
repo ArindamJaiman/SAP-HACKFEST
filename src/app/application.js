@@ -14,6 +14,7 @@ import { EntityRenderer } from '../digital-twin/entityRenderer.js';
 import { RouteRenderer } from '../digital-twin/routeRenderer.js';
 import { PropagationOverlay } from '../digital-twin/propagationOverlay.js';
 import { NetworkGraphView } from '../digital-twin/networkGraphView.js';
+import { MatrixWorldView2D } from '../digital-twin/matrixWorldView2D.js';
 
 import { ExecutiveHud } from '../ui/hud.js';
 import { SidebarNav } from '../ui/sidebarNav.js';
@@ -38,6 +39,7 @@ export async function bootstrapApplication() {
   const routeRenderer = new RouteRenderer(viewer);
   const propagationOverlay = new PropagationOverlay(viewer);
   const networkGraphView = new NetworkGraphView('network-graph-container');
+  const matrixWorldView = new MatrixWorldView2D('matrix-world-container');
 
   // 2. Render Seed Entities & Multimodal Logistics onto Globe
   const state = store.getState();
@@ -80,16 +82,21 @@ export async function bootstrapApplication() {
       entityRenderer.updateLayerVisibility(k, currState.layers[k]);
     });
 
-    // View mode (3D / 2D / Graph)
-    if (currState.ui.viewMode === 'GRAPH') {
-      networkGraphView.activate();
-    } else {
+    // View mode (2D Dotted Matrix / 3D Digital Twin / Graph)
+    if (currState.ui.viewMode === '2D') {
+      matrixWorldView.activate();
       networkGraphView.deactivate();
-      if (currState.ui.viewMode === '2D') {
-        sceneController.set2DMode();
-      } else {
-        sceneController.set3DMode();
-      }
+      if (viewer.container) viewer.container.style.display = 'none';
+    } else if (currState.ui.viewMode === 'GRAPH') {
+      matrixWorldView.deactivate();
+      networkGraphView.activate();
+      if (viewer.container) viewer.container.style.display = 'none';
+    } else {
+      // 3D Cesium Mode
+      matrixWorldView.deactivate();
+      networkGraphView.deactivate();
+      if (viewer.container) viewer.container.style.display = 'block';
+      sceneController.set3DMode();
     }
 
     // Approved route visualization
@@ -102,15 +109,23 @@ export async function bootstrapApplication() {
     }
   });
 
-  // 7. Wire Global Debugging & Controller References
+  // 7. Trigger initial view mode state
+  if (state.ui.viewMode === '2D') {
+    matrixWorldView.activate();
+    if (viewer.container) viewer.container.style.display = 'none';
+  }
+
+  // 8. Wire Global Debugging & Controller References
   window.__cesiumViewer = viewer;
   window.__appSceneController = sceneController;
+  window.__appMatrixWorldView = matrixWorldView;
+  window.__appNetworkGraphView = networkGraphView;
   window.__appOrchestrator = orchestrator;
   window.__appDemoDirector = demoDirector;
   window.__appStore = store;
   window.__appEventBus = eventBus;
 
-  // 8. Launch Multi-Agent Sensing Loop
+  // 9. Launch Multi-Agent Sensing Loop
   orchestrator.startSensingLoop();
 
   console.info('[SAP Resilient] Control Tower fully operational.');

@@ -25,6 +25,22 @@
   pointer-events: auto;
 }
 
+/* 2D Dotted Matrix World Visualization Layer */
+#matrix-world-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2;
+  background: #080c14;
+  display: none;
+  pointer-events: auto;
+}
+#matrix-world-container.active {
+  display: block;
+}
+
 /* 2D Network Graph Overlay Layer */
 #network-graph-container {
   position: absolute;

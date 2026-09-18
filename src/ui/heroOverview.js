@@ -367,5 +367,13 @@ export class HeroOverview {
     } else if (banner) {
       banner.classList.remove('compact');
     }
+
+    // Synchronize 3D / 2D / Graph view switcher active button
+    const btn3D = document.getElementById('btn-submode-3d');
+    const btn2D = document.getElementById('btn-submode-2d');
+    const btnGraph = document.getElementById('btn-submode-graph');
+    if (btn3D) btn3D.classList.toggle('active', state.ui.viewMode === '3D');
+    if (btn2D) btn2D.classList.toggle('active', state.ui.viewMode === '2D');
+    if (btnGraph) btnGraph.classList.toggle('active', state.ui.viewMode === 'GRAPH');
   }
 }

@@ -61,7 +61,7 @@ class CentralStore {
       // UI View, Pages & Tactical Controls
       ui: {
         activePage: 'OVERVIEW', // OVERVIEW | DIGITAL_TWIN | LIVE_OPS | AGENTS | DISRUPTIONS | RISK | FORECAST | SCENARIOS | WHAT_IF | INVENTORY | SUPPLIERS | LOGISTICS | APPROVALS | AUDIT | COMPLIANCE | SUSTAINABILITY | DATA_SOURCES | HEALTH | SETTINGS
-        viewMode: '3D', // '3D' | '2D' | 'GRAPH'
+        viewMode: '2D', // '2D' (default) | '3D' | 'GRAPH'
         selectedEntity: null,
         incidentMode: true,
         activeIncidentTitle: 'PORT OF SINGAPORE DISRUPTION',
